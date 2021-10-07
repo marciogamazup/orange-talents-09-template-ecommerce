@@ -5,8 +5,10 @@ import br.com.zupacademy.marcio.ecommerce.dto.UsuarioDto;
 import br.com.zupacademy.marcio.ecommerce.entities.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -18,17 +20,11 @@ public class UsuarioController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     @PostMapping
     @Transactional
     public ResponseEntity<Usuario> cadastrar (@RequestBody @Valid UsuarioDto dto){
 
-
         Usuario usuario = dto.converterParaObjeto(usuarioRepository);
-
-        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
 
         usuarioRepository.save(usuario);
 

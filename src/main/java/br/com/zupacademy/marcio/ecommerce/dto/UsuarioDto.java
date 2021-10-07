@@ -1,6 +1,8 @@
 package br.com.zupacademy.marcio.ecommerce.dto;
 
 import br.com.zupacademy.marcio.ecommerce.Repository.UsuarioRepository;
+import br.com.zupacademy.marcio.ecommerce.commons.validators.SenhaLimpa;
+import br.com.zupacademy.marcio.ecommerce.commons.validators.UniqueValue;
 import br.com.zupacademy.marcio.ecommerce.entities.Usuario;
 
 import javax.validation.constraints.*;
@@ -11,13 +13,13 @@ public class UsuarioDto {
     private Integer id;
     @NotBlank
     @Email
+    @UniqueValue(domainClass = Usuario.class, fieldName = "email")
     private String email;
     @NotBlank
     @Size(min = 6)
     private String senha;
     @NotNull
     @PastOrPresent
-//    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "dd/MM/YYYY HH:mm:ss")
     private LocalDateTime dataCriacao;
 
     @Deprecated
@@ -27,7 +29,6 @@ public class UsuarioDto {
     public UsuarioDto(Usuario usuario) {
         this.email = usuario.getEmail();
         this.senha = usuario.getSenha();
-        this.dataCriacao = usuario.getDataCriacao();
     }
 
     public String getEmail() {
@@ -43,11 +44,6 @@ public class UsuarioDto {
     }
 
     public Usuario converterParaObjeto(UsuarioRepository usuarioRepository) {
-
-        return new Usuario(email,senha, dataCriacao);
+        return new Usuario(email, new SenhaLimpa(senha));
     }
-
-//    public static List<CategoriaDto> converter(List<Categoria> categorias) {
-//        return categorias.stream().map(CategoriaDto::new).collect(Collectors.toList());
-//    }
 }

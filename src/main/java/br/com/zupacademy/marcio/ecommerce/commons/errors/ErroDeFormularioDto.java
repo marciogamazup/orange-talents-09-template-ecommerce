@@ -1,4 +1,4 @@
-package br.com.zupacademy.marcio.ecommerce.validator;
+package br.com.zupacademy.marcio.ecommerce.commons.errors;
 
 public class ErroDeFormularioDto {
 

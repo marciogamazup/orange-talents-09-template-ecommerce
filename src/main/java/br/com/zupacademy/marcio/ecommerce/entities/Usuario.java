@@ -1,6 +1,10 @@
 package br.com.zupacademy.marcio.ecommerce.entities;
 
+import br.com.zupacademy.marcio.ecommerce.commons.validators.SenhaLimpa;
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 
@@ -16,21 +20,20 @@ public class Usuario {
     @Email
     private String email;
     @NotBlank
-    @Size(min = 6)
+    @Length(min = 6)
     private String senha;
     @NotNull
     @PastOrPresent
-//    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "dd/MM/YYYY HH:mm:ss")
     private LocalDateTime dataCriacao;
 
     @Deprecated
     public Usuario(){
     }
 
-    public Usuario(@NotBlank @Email String email, @NotBlank @Size(min = 6) String senha, @NotNull @PastOrPresent LocalDateTime dataCriacao) {
+    public Usuario(@NotBlank @Email String email, @Valid @NotBlank SenhaLimpa senhaLimpa){
         this.email = email;
-        this.senha = senha;
-        this.dataCriacao = dataCriacao;
+        this.senha = senhaLimpa.hash();
+        this.dataCriacao = LocalDateTime.now();
     }
 
     public Integer getId() {
@@ -43,14 +46,6 @@ public class Usuario {
 
     public String getSenha() {
         return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-    public LocalDateTime getDataCriacao() {
-        return dataCriacao;
     }
 
     @Override

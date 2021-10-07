@@ -1,4 +1,4 @@
-package br.com.zupacademy.marcio.ecommerce.validator;
+package br.com.zupacademy.marcio.ecommerce.commons.errors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
