@@ -10,7 +10,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ExistId {
 
-    String message() default "Id já está cadastrado !";
+    String message() default "Id não está cadastrado !";
     Class<?>[] groups() default { };
     Class<? extends Payload>[] payload() default { };
     String fieldName();

@@ -5,6 +5,10 @@ public class ErroDeFormularioDto {
     private String campo;
     private String erro;
 
+    @Deprecated
+    public ErroDeFormularioDto() {
+    }
+
     public ErroDeFormularioDto (String campo, String erro) {
         this.campo = campo;
         this.erro = erro;
