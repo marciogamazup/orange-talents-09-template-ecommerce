@@ -4,8 +4,8 @@ import javax.persistence.*;
 import javax.validation.constraints.PastOrPresent;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "tb_produto")
@@ -23,7 +23,6 @@ public class Produto {
     private BigDecimal preco;
 
     @Column(nullable = false)
-    //    @Type(type = "materialized_nclob")
     private String descricao;
 
     @Column(nullable = false)
@@ -38,6 +37,9 @@ public class Produto {
 
     @ElementCollection
     private Map<String, String> caracteristicas = new HashMap<>();
+
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
+    private Set<ImagemProduto> imagens = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
@@ -58,4 +60,27 @@ public class Produto {
         this.usuario = usuario;
         this.caracteristicas = caracteristicas;
     }
- }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void associaImagens(Set<String> linksDaLista) {
+        Set<ImagemProduto> imagensDoProduto = linksDaLista.stream().map(links -> new ImagemProduto(this,links))
+                .collect(Collectors.toSet());
+        this.imagens.addAll(imagensDoProduto);
+    }
+
+    public boolean pertenceAoUsuario(Usuario possivelDono) {
+
+        return this.usuario.equals(possivelDono);
+    }
+
+    public Set<ImagemProduto> getImagens() {
+        return imagens;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+}
