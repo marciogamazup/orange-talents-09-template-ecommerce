@@ -50,7 +50,6 @@ public class OpiniaoDto {
     public Opiniao converteParaObjeto(@NotNull @Valid Usuario usuarioQueOpina,
                                       @NotNull @Valid Produto produto) {
 
-        System.out.println(titulo);
         return new Opiniao(titulo, descricao, nota,usuarioQueOpina, produto);
     }
 }

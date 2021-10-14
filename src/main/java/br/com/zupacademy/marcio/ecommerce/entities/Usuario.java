@@ -20,7 +20,6 @@ public class Usuario implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     @NotBlank
     @Email
     private String email;
@@ -30,10 +29,8 @@ public class Usuario implements UserDetails {
     @NotNull
     @PastOrPresent
     private LocalDateTime dataCriacao;
-
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Perfil> perfis = new ArrayList<>();
-
     @Deprecated
     public Usuario(){
     }

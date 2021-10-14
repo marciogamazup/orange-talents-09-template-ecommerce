@@ -33,8 +33,6 @@ public class OpinioesController {
         Usuario usuarioQueOpina = usuarioRepository.findByEmail("marciogama@gmail.com").get();
         Produto produto = produtoRepository.findById(id).get();
 
-        System.out.println(produto.getNome());
-
         Opiniao opiniao = dto.converteParaObjeto(usuarioQueOpina, produto);
         opiniaoRepository.save(opiniao);
     }
