@@ -6,9 +6,7 @@ import br.com.zupacademy.marcio.ecommerce.Repository.ProdutoRepository;
 import br.com.zupacademy.marcio.ecommerce.Repository.UsuarioRepository;
 import br.com.zupacademy.marcio.ecommerce.commons.utils.Uploader;
 import br.com.zupacademy.marcio.ecommerce.dto.NovasImagensDto;
-import br.com.zupacademy.marcio.ecommerce.dto.OpiniaoDto;
 import br.com.zupacademy.marcio.ecommerce.dto.ProdutoDto;
-import br.com.zupacademy.marcio.ecommerce.entities.Opiniao;
 import br.com.zupacademy.marcio.ecommerce.entities.Produto;
 import br.com.zupacademy.marcio.ecommerce.entities.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +34,8 @@ public class ProdutoController {
     @Autowired
     UsuarioRepository usuarioRepository;
 
-    @Autowired
-    OpiniaoRepository opiniaoRepository;
+//    @Autowired
+//    OpiniaoRepository opiniaoRepository;
 
     @PostMapping
     @Transactional
@@ -65,19 +63,5 @@ public class ProdutoController {
         produtoRepository.save(produto);
 
         return  produto.toString();
-    }
-
-    @PostMapping(value = "/opinioes/{id}")
-    @Transactional
-    public void adicionaOpinioes(@PathVariable("id") Long id, @RequestBody @Valid OpiniaoDto dto) {
-
-        Usuario usuarioQueOpina = usuarioRepository.findByEmail("marciogama@gmail.com").get();
-        Produto produto = produtoRepository.findById(id).get();
-
-        System.out.println(produto.getNome());
-
-        Opiniao opiniao = dto.converteParaObjeto(usuarioQueOpina, produto);
-        opiniaoRepository.save(opiniao);
-
     }
 }
