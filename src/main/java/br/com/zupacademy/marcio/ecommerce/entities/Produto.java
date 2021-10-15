@@ -41,6 +41,12 @@ public class Produto {
     @OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
     private Set<ImagemProduto> imagens = new HashSet<>();
 
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
+    private List<Pergunta> perguntas = new ArrayList<>();
+
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
+    private List<Opiniao> opinioes = new ArrayList<>();
+
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
@@ -65,6 +71,18 @@ public class Produto {
         return nome;
     }
 
+    public BigDecimal getPreco() {
+        return preco;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public Map<String, String> getCaracteristicas() {
+        return caracteristicas;
+    }
+
     public void associaImagens(Set<String> linksDaLista) {
         Set<ImagemProduto> imagensDoProduto = linksDaLista.stream().map(links -> new ImagemProduto(this,links))
                 .collect(Collectors.toSet());
@@ -80,7 +98,30 @@ public class Produto {
         return imagens;
     }
 
+    public List<Pergunta> getPerguntas() {
+        return perguntas;
+    }
+
+    public List<Opiniao> getOpinioes() {
+        return opinioes;
+    }
+
     public Usuario getUsuario() {
         return usuario;
+    }
+
+    public Integer contadorDeNotas() {
+
+        List<Opiniao> opinioes = this.getOpinioes();
+
+        return opinioes.size();
+    }
+
+    public Double mediaDeNotas() {
+
+        List<Opiniao> opinioes = this.getOpinioes();
+        List<Integer> notas = opinioes.stream().map(Opiniao::getNota).collect(Collectors.toList());
+
+        return  notas.stream().mapToDouble(Integer::doubleValue).average().orElse(0.0);
     }
 }

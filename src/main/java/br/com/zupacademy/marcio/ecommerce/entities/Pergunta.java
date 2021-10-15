@@ -25,21 +25,25 @@ public class Pergunta {
 
     @ManyToOne
     @JoinColumn(name = "produto_id", nullable = false)
-    private Produto produtoPergunta;
+    private Produto produto;
 
     @Deprecated
     public Pergunta(){
     }
 
-    public Pergunta(String titulo, Usuario usuario, Produto produtoPergunta ){
+    public Pergunta(String titulo, Usuario usuario, Produto produto){
         this.titulo = titulo;
         this.dataCriacao = LocalDateTime.now();
         this.usuario = usuario;
-        this.produtoPergunta = produtoPergunta;
+        this.produto = produto;
     }
 
     public String getTitulo() {
         return titulo;
+    }
+
+    public Produto getProduto() {
+        return produto;
     }
 
     public void setTitulo(String titulo) {
@@ -53,7 +57,7 @@ public class Pergunta {
                 ", titulo='" + titulo + '\'' +
                 ", dataCriacao=" + dataCriacao +
                 ", usuario=" + usuario +
-                ", produtoPergunta=" + produtoPergunta +
+                ", produtoPergunta=" + produto +
                 '}';
     }
 }

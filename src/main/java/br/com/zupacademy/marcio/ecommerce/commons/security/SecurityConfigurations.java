@@ -44,8 +44,9 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.GET,"/categorias").permitAll()
-                .antMatchers(HttpMethod.POST,"/categorias").permitAll()
                 .antMatchers(HttpMethod.GET,"/categorias/*").permitAll()
+                .antMatchers(HttpMethod.GET,"/produtos/*").permitAll()
+                .antMatchers(HttpMethod.POST,"/categorias").permitAll()
                 .antMatchers(HttpMethod.POST,"/produtos").permitAll()
                 .antMatchers(HttpMethod.POST,"/produtos/imagens/*").permitAll()
                 .antMatchers(HttpMethod.POST,"/usuarios").permitAll()

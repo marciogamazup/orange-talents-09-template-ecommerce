@@ -24,7 +24,7 @@ public class PerguntaDto {
         return titulo;
     }
 
-    public Pergunta toModel(@NotNull @Valid Usuario usuarioQuePergunta, @NotNull @Valid Produto produtoPergunta) {
-        return new Pergunta(titulo,usuarioQuePergunta,produtoPergunta);
+    public Pergunta toModel(@NotNull @Valid Usuario usuarioQuePergunta, @NotNull @Valid Produto produto) {
+        return new Pergunta(titulo,usuarioQuePergunta, produto);
     }
 }

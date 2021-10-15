@@ -23,18 +23,30 @@ public class Opiniao {
 
     @ManyToOne
     @JoinColumn(name = "produto_id", nullable = false)
-    private Produto produtoOpniao;
+    private Produto produto;
 
     @Deprecated
     public Opiniao(){
     }
 
-    public Opiniao(String titulo, String descricao, Integer nota, Usuario usuario, Produto produtoOpniao) {
+    public Opiniao(String titulo, String descricao, Integer nota, Usuario usuario, Produto produto) {
         this.titulo = titulo;
         this.descricao = descricao;
         this.nota = nota;
         this.usuario = usuario;
-        this.produtoOpniao = produtoOpniao;
+        this.produto = produto;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public Integer getNota() {
+        return nota;
     }
 
     @Override
@@ -45,7 +57,7 @@ public class Opiniao {
                 ", descricao='" + descricao + '\'' +
                 ", nota=" + nota +
                 ", usuario=" + usuario +
-                ", produto=" + produtoOpniao +
+                ", produto=" + produto +
                 '}';
     }
 }
