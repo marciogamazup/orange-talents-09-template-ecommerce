@@ -1,7 +1,11 @@
 package br.com.zupacademy.marcio.ecommerce.entities;
 
+import br.com.zupacademy.marcio.ecommerce.commons.errors.exceptions.EstoqueInsuficienteException;
+import org.springframework.util.Assert;
+
 import javax.persistence.*;
 import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
@@ -123,5 +127,12 @@ public class Produto {
         List<Integer> notas = opinioes.stream().map(Opiniao::getNota).collect(Collectors.toList());
 
         return  notas.stream().mapToDouble(Integer::doubleValue).average().orElse(0.0);
+    }
+
+    public void verificarAQuantidadeDoProdutoNoEstoque(Integer quantidade) {
+        Assert.isTrue(quantidade > 0, "A quantidade deve ser maior que zero !!");
+        if (quantidade > this.quantidade) {
+            throw new EstoqueInsuficienteException();
+        }
     }
 }

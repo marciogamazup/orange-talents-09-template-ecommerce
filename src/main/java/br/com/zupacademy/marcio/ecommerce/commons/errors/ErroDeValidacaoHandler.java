@@ -1,5 +1,8 @@
 package br.com.zupacademy.marcio.ecommerce.commons.errors;
 
+import br.com.zupacademy.marcio.ecommerce.commons.errors.exceptions.EstoqueInsuficienteException;
+import br.com.zupacademy.marcio.ecommerce.commons.errors.exceptions.ProdutoInexistenteException;
+import br.com.zupacademy.marcio.ecommerce.commons.errors.exceptions.UsuarioInexistenteException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -48,6 +51,32 @@ public class ErroDeValidacaoHandler {
         return new ResponseEntity<>(erroDeFormularioDto, new HttpHeaders(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(value = {ProdutoInexistenteException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErroDeFormularioDto handleProdutoInexistenteException(ProdutoInexistenteException e, WebRequest request) {
+
+        ErroDeFormularioDto erroDeFormularioDto = new ErroDeFormularioDto("idProduto","Produto não encontrado !");
+
+        return  erroDeFormularioDto;
+    }
+
+    @ExceptionHandler(value = {EstoqueInsuficienteException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErroDeFormularioDto handleEstoqueInsuficienteException(EstoqueInsuficienteException e, WebRequest request) {
+
+        ErroDeFormularioDto erroDeFormularioDto = new ErroDeFormularioDto("quantidade","Estoque insuficiente para essa quantidade !");
+
+        return  erroDeFormularioDto;
+    }
+
+    @ExceptionHandler(value = {UsuarioInexistenteException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErroDeFormularioDto handleUsuarioInexistenteException(UsuarioInexistenteException e, WebRequest request) {
+
+        ErroDeFormularioDto erroDeFormularioDto = new ErroDeFormularioDto("emailComprador","Usuário não está cadastrado em nossa base !");
+
+        return  erroDeFormularioDto;
+    }
 
 
 
