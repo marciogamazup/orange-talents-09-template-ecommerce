@@ -46,7 +46,7 @@ public class ProdutoDto {
     private ProdutoDto() {
     }
 
-    public ProdutoDto(String nome, BigDecimal preco, String descricao, Integer quantidade, Integer categoria_id,
+    public ProdutoDto(@NotBlank String nome, BigDecimal preco, String descricao, Integer quantidade, Integer categoria_id,
                       Integer usuario_id, Map<String, String> caracteristicas) {
         this.nome = nome;
         this.preco = preco;
@@ -85,12 +85,8 @@ public class ProdutoDto {
         return caracteristicas;
     }
 
-    public Produto converteParaObjeto(CategoriaRepository categoriaRepository, UsuarioRepository usuarioRepository) {
+    public Produto converteParaObjeto(CategoriaRepository categoriaRepository, Usuario usuario) {
         Optional<Categoria> categoria = categoriaRepository.findById(categoria_id);
-        Optional<Usuario> usuario = usuarioRepository.findById(usuario_id);
-        if (categoria.isPresent() && usuario.isPresent()) {
-            return new Produto(this.nome, this.preco, this.descricao, this.quantidade,categoria.get(),usuario.get(),caracteristicas );
-        }
-        return null;
+        return new Produto(this.nome, this.preco, this.descricao, this.quantidade,categoria.get(),usuario,caracteristicas );
     }
 }

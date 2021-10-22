@@ -2,12 +2,14 @@ package br.com.zupacademy.marcio.ecommerce.entities;
 
 import br.com.zupacademy.marcio.ecommerce.entities.enums.GatewayDePagamento;
 import br.com.zupacademy.marcio.ecommerce.entities.enums.StatusDeCompra;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
+import java.net.URI;
 import java.time.LocalDateTime;
 
 @Entity
@@ -92,6 +94,18 @@ public class Compras {
     public LocalDateTime getMomentoCompra() {
         return momentoCompra;
     }
+
+    public URI montaUri (UriComponentsBuilder uriComponentsBuilder, Compras compras) {
+
+        URI meioPagamentoUri = URI.create((compras.getGatewayDePagamento().equals(GatewayDePagamento.PAGSEGURO)) ?
+                ("pagseguro.com/" + compras.getId() + "?redirectUrl=" + uriComponentsBuilder.path("/retorno-pagseguro/{id}")
+                        .buildAndExpand(compras.getId()).toString()) :
+                ("paypal.com/" + compras.getId() + "?redirectUrl=" + uriComponentsBuilder.path("/retorno-paypal/{id}")
+                        .buildAndExpand(compras.getId()).toString()));
+
+        return meioPagamentoUri;
+    }
+
 
     @Override
     public String toString() {

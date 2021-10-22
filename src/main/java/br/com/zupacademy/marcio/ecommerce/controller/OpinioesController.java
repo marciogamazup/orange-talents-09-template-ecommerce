@@ -8,10 +8,14 @@ import br.com.zupacademy.marcio.ecommerce.entities.Opiniao;
 import br.com.zupacademy.marcio.ecommerce.entities.Produto;
 import br.com.zupacademy.marcio.ecommerce.entities.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/produtos/opinioes/{id}")
@@ -28,12 +32,17 @@ public class OpinioesController {
 
     @PostMapping
     @Transactional
-    public void adicionaOpinioes(@PathVariable("id") Long id, @RequestBody @Valid OpiniaoDto dto) {
+    public void adicionaOpinioes(@PathVariable("id") Long id, @RequestBody @Valid OpiniaoDto dto, @AuthenticationPrincipal Usuario usuario  ) {
 
-        Usuario usuarioQueOpina = usuarioRepository.findByEmail("marciogama@gmail.com").get();
+        Optional<Usuario> usuarioQueOpina = usuarioRepository.findByEmail(usuario.getEmail());
         Produto produto = produtoRepository.findById(id).get();
 
-        Opiniao opiniao = dto.converteParaObjeto(usuarioQueOpina, produto);
+        if(!produto.pertenceAoUsuario(usuarioQueOpina)) {
+
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        Opiniao opiniao = dto.converteParaObjeto(usuarioQueOpina.get(), produto);
         opiniaoRepository.save(opiniao);
     }
 }

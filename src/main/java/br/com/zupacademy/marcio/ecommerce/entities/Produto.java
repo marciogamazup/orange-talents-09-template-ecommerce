@@ -5,7 +5,6 @@ import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import javax.validation.constraints.PastOrPresent;
-import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
@@ -93,9 +92,9 @@ public class Produto {
         this.imagens.addAll(imagensDoProduto);
     }
 
-    public boolean pertenceAoUsuario(Usuario possivelDono) {
+    public boolean pertenceAoUsuario(Optional<Usuario> possivelDono) {
 
-        return this.usuario.equals(possivelDono);
+        return this.usuario.getEmail().equals(possivelDono.get().getEmail());
     }
 
     public Set<ImagemProduto> getImagens() {

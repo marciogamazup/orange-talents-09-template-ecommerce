@@ -46,14 +46,13 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,"/categorias").permitAll()
                 .antMatchers(HttpMethod.GET,"/categorias/*").permitAll()
                 .antMatchers(HttpMethod.GET,"/produtos/*").permitAll()
-                .antMatchers(HttpMethod.POST,"/categorias").permitAll()
-                .antMatchers(HttpMethod.POST,"/produtos").permitAll()
-                .antMatchers(HttpMethod.POST,"/produtos/imagens/*").permitAll()
+                .antMatchers(HttpMethod.POST,"/categorias").authenticated()
+                .antMatchers(HttpMethod.POST,"/produtos").authenticated()
+                .antMatchers(HttpMethod.POST,"/produtos/imagens/*").authenticated()
                 .antMatchers(HttpMethod.POST,"/usuarios").permitAll()
-                .antMatchers(HttpMethod.POST,"/opinioes").permitAll()
-                .antMatchers(HttpMethod.POST,"/produtos/opinioes/*").permitAll()
-                .antMatchers(HttpMethod.POST,"/produtos/perguntas/*").permitAll()
-                .antMatchers(HttpMethod.POST,"/compras").permitAll()
+                .antMatchers(HttpMethod.POST,"/produtos/opinioes/*").authenticated()
+                .antMatchers(HttpMethod.POST,"/produtos/perguntas/*").authenticated()
+                .antMatchers(HttpMethod.POST,"/compras").authenticated()
                 .antMatchers(HttpMethod.POST,"/auth").permitAll()
 //                .antMatchers(HttpMethod.GET,"/actuator/*").permitAll()
                 .anyRequest().authenticated()
@@ -66,6 +65,5 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
     // Configurações de recursos estáticos (js, css, imagens, etc.)
     @Override
     public void configure(WebSecurity web) throws Exception {
-
     }
 }
