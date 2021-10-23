@@ -1,7 +1,9 @@
 package br.com.zupacademy.marcio.ecommerce.entities;
 
+import br.com.zupacademy.marcio.ecommerce.commons.errors.exceptions.ExceptionPagamentoJaEfetuado;
 import br.com.zupacademy.marcio.ecommerce.entities.enums.GatewayDePagamento;
 import br.com.zupacademy.marcio.ecommerce.entities.enums.StatusDeCompra;
+import br.com.zupacademy.marcio.ecommerce.entities.enums.StatusDePagamento;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.persistence.*;
@@ -11,6 +13,8 @@ import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_compras")
@@ -45,6 +49,9 @@ public class Compras {
     @Valid
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
+
+    @OneToMany(mappedBy = "compras")
+    private List<Pagamentos> pagamentos = new ArrayList<>();
 
     private LocalDateTime momentoCompra = LocalDateTime.now();
 
@@ -104,6 +111,23 @@ public class Compras {
                         .buildAndExpand(compras.getId()).toString()));
 
         return meioPagamentoUri;
+    }
+
+    public boolean achaPagamentoCadastradoComSucesso() {
+
+        if(pagamentos.isEmpty()){
+            return false;
+        }
+        for (Pagamentos pagamento :pagamentos) {
+            if(pagamento.getStatusDePagamento().equals(StatusDePagamento.SUCESSO)){
+                throw new ExceptionPagamentoJaEfetuado("Pagamento já efetuado");
+            }
+        }
+        return false;
+    }
+
+    public void alteraStatusPagamento() {
+        statusDeCompra = StatusDeCompra.PAGO;
     }
 
 

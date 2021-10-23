@@ -1,8 +1,6 @@
 package br.com.zupacademy.marcio.ecommerce.commons.errors;
 
-import br.com.zupacademy.marcio.ecommerce.commons.errors.exceptions.EstoqueInsuficienteException;
-import br.com.zupacademy.marcio.ecommerce.commons.errors.exceptions.ProdutoInexistenteException;
-import br.com.zupacademy.marcio.ecommerce.commons.errors.exceptions.UsuarioInexistenteException;
+import br.com.zupacademy.marcio.ecommerce.commons.errors.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -78,7 +76,24 @@ public class ErroDeValidacaoHandler {
         return  erroDeFormularioDto;
     }
 
+    @ExceptionHandler(value = {CompraInexistenteException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErroDeFormularioDto handleCompraInexistenteException(CompraInexistenteException e, WebRequest request) {
 
+        ErroDeFormularioDto erroDeFormularioDto = new ErroDeFormularioDto("compraId", "Id para essa compra, não está cadastrada em nossa base !");
+
+        return erroDeFormularioDto;
+    }
+
+    @ExceptionHandler(value = {ExceptionPagamentoJaEfetuado.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErroDeFormularioDto handlePagamentoJaEfetuado(ExceptionPagamentoJaEfetuado e, WebRequest request) {
+
+        ErroDeFormularioDto erroDeFormularioDto = new ErroDeFormularioDto( "Pagamento", "Pagamento já efetuado para essa compra !");
+
+        return erroDeFormularioDto;
+
+    }
 
 
 
